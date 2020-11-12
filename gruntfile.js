@@ -146,6 +146,7 @@
       options: {
         apioMin: '<%=pkg.apio.min%>',
         apioMax: '<%=pkg.apio.max%>',
+        apioBranch: '<%=pkg.apio.branch%>',
         buildDir: 'dist/',
         extraPackages: '<%=pkg.apio.extras%>',
         platforms: platforms

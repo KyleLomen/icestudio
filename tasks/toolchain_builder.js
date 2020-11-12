@@ -142,10 +142,19 @@ ToolchainBuilder.prototype.downloadApio = function () {
   self.emit('log', '> Download apio');
   return new Promise(function(resolve, reject) {
     var versionRange = '">=' + self.options.apioMin + ',<' + self.options.apioMax + '"';
-    var command = [
-      self.options.venvPip, 'download', '--dest', self.options.apioDir,
-      'apio[' + self.options.extraPackages.toString() + ']' + versionRange
-    ];
+    var command = [];
+    if(self.options.apioBranch === "develop") {
+      command = [
+        self.options.venvPip, 'download', '--dest', self.options.apioDir,
+        'git+https://github.com/FPGAwars/apio.git@develop#egg=apio[' + self.options.extraPackages.toString() + ']' + versionRange
+      ];
+    }
+    else {
+      command = [
+        self.options.venvPip, 'download', '--dest', self.options.apioDir,
+        'apio[' + self.options.extraPackages.toString() + ']' + versionRange
+      ];
+    }
     childProcess.exec(command.join(' '),
       function(error/*, stdout, stderr*/) {
         if (error) { reject(error); }
