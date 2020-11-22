@@ -26,18 +26,26 @@ angular.module('icestudio')
     // Get the system executable
     this.getPythonExecutable = function () {
       if (!_pythonExecutableCached) {
-        const possibleExecutables = [];
 
-        if (common.WIN32) {
+        const possibleExecutables = [];
+        if(typeof common.PYTHON_ENV !== 'undefined' &&
+        common.PYTHON_ENV .length>0){
+
+          possibleExecutables.push(common.PYTHON_ENV);
+
+        }else if (common.WIN32) {
+          possibleExecutables.push('C:\\Python39\\python.exe');
           possibleExecutables.push('C:\\Python38\\python.exe');
           possibleExecutables.push('C:\\Python37\\python.exe');
           possibleExecutables.push('C:\\Python36\\python.exe');
           possibleExecutables.push('C:\\Python35\\python.exe');
+          possibleExecutables.push('py.exe -3');
           possibleExecutables.push('python.exe');
         } else {
           possibleExecutables.push('/usr/local/Cellar/python/3.8.2/bin/python3');
           possibleExecutables.push('/usr/local/Cellar/python/3.7.7/bin/python3');
           
+          possibleExecutables.push('/usr/bin/python3.9');
           possibleExecutables.push('/usr/bin/python3.8');
           possibleExecutables.push('/usr/bin/python3.7');
           possibleExecutables.push('/usr/bin/python3.6');
@@ -45,6 +53,7 @@ angular.module('icestudio')
           possibleExecutables.push('/usr/bin/python3');
           possibleExecutables.push('/usr/bin/python');
 
+          possibleExecutables.push('/usr/local/bin/python3.9');
           possibleExecutables.push('/usr/local/bin/python3.8');
           possibleExecutables.push('/usr/local/bin/python3.7');
           possibleExecutables.push('/usr/local/bin/python3.6');
@@ -52,6 +61,7 @@ angular.module('icestudio')
           possibleExecutables.push('/usr/local/bin/python3');
           possibleExecutables.push('/usr/local/bin/python');
 
+          possibleExecutables.push('python3.9');
           possibleExecutables.push('python3.8');
           possibleExecutables.push('python3.7');
           possibleExecutables.push('python3.6');
@@ -60,7 +70,7 @@ angular.module('icestudio')
           possibleExecutables.push('python');
 
         }
-
+        console.log('possible python', possibleExecutables);
         for (var i in possibleExecutables) {
           var executable = possibleExecutables[i];
           if (isPython3(executable)) {
@@ -73,6 +83,7 @@ angular.module('icestudio')
     };
 
     function isPython3(executable) {
+
       console.log('Python test',executable);
       executable += ' -V';
       try {
@@ -80,7 +91,8 @@ angular.module('icestudio')
         console.log('==>',result.toString());
         return (result !== false && result !== null &&
           (result.toString().indexOf('3.5') >= 0 || result.toString().indexOf('3.6') >= 0 ||
-            result.toString().indexOf('3.7') >= 0 || result.toString().indexOf('3.8') >= 0));
+            result.toString().indexOf('3.7') >= 0 || result.toString().indexOf('3.8') >= 0 ||
+            result.toString().indexOf('3.9') >= 0));
       } catch (e) {
         return false;
       }
@@ -171,6 +183,7 @@ angular.module('icestudio')
     };
 
     this.checkDefaultToolchain = function () {
+      console.log('Toolchain start',common.TOOLCHAIN_DIR);
       try {
         // TODO: use zip with sha1
         return nodeFs.statSync(common.TOOLCHAIN_DIR).isDirectory();

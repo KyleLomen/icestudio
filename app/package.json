@@ -1,7 +1,7 @@
 {
   "name": "icestudio",
-  "version": "0.5.1n201009.PCC",
-  "nightly": "0.5.1n201009.PCC",
+  "version": "0.5.1n201120.PCC",
+  "nightly": "0.5.1n201120.PCC",
   "flavour": "develop",
   "description": "Visual editor for open FPGA boards",
   "contributors": [
@@ -44,6 +44,7 @@
       "tinyfpgab",
       "tinyprog",
       "icefunprog",
+      "icesprog",
       "fujprog"
     ],
     "external": "",
